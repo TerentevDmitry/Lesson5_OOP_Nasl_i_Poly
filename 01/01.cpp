@@ -2,17 +2,11 @@
 
 class Figure
 {
-protected:
+private:
 	int numberOfSides_ = 0;
 	std::string nameOfFigure_ = "Фигура: ";
 
 public:
-	Figure(int numberOfSides, std::string nameOfFigure)
-	{
-		numberOfSides_ = numberOfSides;
-		nameOfFigure_ = nameOfFigure;
-	}
-
 	Figure() = default;
 
 	int getNumberOfSides()
@@ -20,9 +14,19 @@ public:
 		return numberOfSides_;
 	}
 
+	void setNumberOfSides(int numberOfSides)
+	{
+		numberOfSides_ = numberOfSides;
+	}
+
 	std::string getNameOfFigure()
 	{
 		return nameOfFigure_;
+	}
+
+	void setNameOfFigure(std::string nameOfFigure)
+	{
+		nameOfFigure_ = nameOfFigure;
 	}
 };
 
@@ -33,32 +37,32 @@ private:
 	std::string nameOfFigure_ = "Треугольник: ";
 
 public:
-	int getNumberOfSides()
+	void setNameOfFigure()
 	{
-		return numberOfSides_;
+		Figure::setNameOfFigure(Triangle::nameOfFigure_);
 	}
 
-	std::string getNameOfFigure()
+	void setNumberOfSides()
 	{
-		return nameOfFigure_;
+		Figure::setNumberOfSides(Triangle::numberOfSides_);
 	}
 };
 
 class Quadrilateral : public Figure
 {
 private:
-	int numberOfSides_ = 4;
 	std::string nameOfFigure_ = "Четырехугольник: ";
-
+	int numberOfSides_ = 4;
+	
 public:
-	int getNumberOfSides()
+	void setNameOfFigure()
 	{
-		return numberOfSides_;
+		Figure::setNameOfFigure(Quadrilateral::nameOfFigure_);
 	}
 
-	std::string getNameOfFigure()
+	void setNumberOfSides()
 	{
-		return nameOfFigure_;
+		Figure::setNumberOfSides(Quadrilateral::numberOfSides_);
 	}
 };
 
@@ -72,14 +76,18 @@ int main()
 	setlocale(LC_ALL, "Russian"); //Корректное отображение Кириллицы
 	system("chcp 1251");
 
-	std::cout << "Количество сторон: " << std::endl;
+	std::cout << std::endl << "Количество сторон: " << std::endl;
 	
 	Figure Figure;
 	print(Figure.getNameOfFigure(), Figure.getNumberOfSides());
 		
 	Triangle Triangle;
+	Triangle.setNameOfFigure();
+	Triangle.setNumberOfSides();
 	print(Triangle.getNameOfFigure(), Triangle.getNumberOfSides());
 	
 	Quadrilateral Quadrilateral;
+	Quadrilateral.setNameOfFigure();
+	Quadrilateral.setNumberOfSides();
 	print(Quadrilateral.getNameOfFigure(), Quadrilateral.getNumberOfSides());
 }
