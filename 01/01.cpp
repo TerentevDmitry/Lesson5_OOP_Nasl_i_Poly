@@ -2,73 +2,48 @@
 
 class Figure
 {
-private:
+protected:
 	int numberOfSides_ = 0;
-	std::string nameOfFigure_ = "Фигура: ";
+	std::string nameOfFigure_;
 
-public:
-	Figure() = default;
-
-	int getNumberOfSides()
-	{
-		return numberOfSides_;
-	}
-
-	void setNumberOfSides(int numberOfSides)
+Figure(int numberOfSides, std::string nameOfFigure)
 	{
 		numberOfSides_ = numberOfSides;
-	}
-
-	std::string getNameOfFigure()
-	{
-		return nameOfFigure_;
-	}
-
-	void setNameOfFigure(std::string nameOfFigure)
-	{
 		nameOfFigure_ = nameOfFigure;
-	}
-};
 
-class Triangle : public Figure
-{
-private:
-	int numberOfSides_ = 3;
-	std::string nameOfFigure_ = "Треугольник: ";
+	};
 
 public:
-	void setNameOfFigure()
-	{
-		Figure::setNameOfFigure(Triangle::nameOfFigure_);
-	}
+    
+	
+	Figure() : Figure(0, "Фигура: ") {};
 
-	void setNumberOfSides()
-	{
-		Figure::setNumberOfSides(Triangle::numberOfSides_);
-	}
+	//Метод геттер числа сторон
+	int getNumberOfSides() const { return numberOfSides_; }
+
+	//Метод геттер названия фигуры
+	std::string getNameOfFigure() const { return nameOfFigure_; }
+};
+
+class Triangle : public Figure 
+{ 
+public:
+		
+	Triangle() : Figure(3, "Треугольник") {};
+	
 };
 
 class Quadrilateral : public Figure
 {
-private:
-	std::string nameOfFigure_ = "Четырехугольник: ";
-	int numberOfSides_ = 4;
-	
 public:
-	void setNameOfFigure()
-	{
-		Figure::setNameOfFigure(Quadrilateral::nameOfFigure_);
-	}
 
-	void setNumberOfSides()
-	{
-		Figure::setNumberOfSides(Quadrilateral::numberOfSides_);
-	}
+	Quadrilateral() : Figure(4, "Четырехугольник") {};
+
 };
 
-void print(std::string nameOfFigure, int NumberOfSides)
+void print(Figure &x) //Функция печати названия фигуры и числа сторон
 {
-	std::cout << nameOfFigure << NumberOfSides << std::endl;
+	std::cout << x.getNameOfFigure() << " : " << x.getNumberOfSides() << std::endl;
 }
 
 int main()
@@ -77,17 +52,12 @@ int main()
 	system("chcp 1251");
 
 	std::cout << std::endl << "Количество сторон: " << std::endl;
-	
-	Figure Figure;
-	print(Figure.getNameOfFigure(), Figure.getNumberOfSides());
-		
-	Triangle Triangle;
-	Triangle.setNameOfFigure();
-	Triangle.setNumberOfSides();
-	print(Triangle.getNameOfFigure(), Triangle.getNumberOfSides());
-	
-	Quadrilateral Quadrilateral;
-	Quadrilateral.setNameOfFigure();
-	Quadrilateral.setNumberOfSides();
-	print(Quadrilateral.getNameOfFigure(), Quadrilateral.getNumberOfSides());
-}
+
+	Figure Figure1;
+	Triangle Triangle1;
+	Quadrilateral Quadrilateral1;
+
+	print(Figure1);
+	print(Triangle1);
+	print(Quadrilateral1);
+};
