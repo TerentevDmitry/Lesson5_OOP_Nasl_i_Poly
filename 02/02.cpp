@@ -16,7 +16,7 @@ private:
 	
 public:
 	Triangle() = default;
-	
+
 	Triangle(std::string nameOfFigure, int sideLengthA, int sideLengthB, int sideLengthC, int angleA, int angleB, int angleC)
 	{
 		nameOfFigure_ = nameOfFigure;
@@ -40,10 +40,6 @@ public:
 	int getAngleC() const { return angleC_; }
 	//int getAngleD() const { return angleD_; }
 
-
-
-
-
 };
 
 class rightTriangle : public Triangle
@@ -52,6 +48,12 @@ private:
 	std::string nameOfFigure = "Прямоугольный треугольник";
 
 public:
+
+	rightTriangle() : Triangle(3, "Треугольник") {};
+
+
+
+
 };
 
 //printTriangle(std::string nameOfFigure, int sideLengthA, int sideLengthB, int sideLengthC, int angleA, int angleB, int angleC)
@@ -77,9 +79,21 @@ int main()
 	setlocale(LC_ALL, "Russian"); //Корректное отображение Кириллицы
 	system("chcp 1251");
 
-	Triangle Triangle;
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	/*Triangle Triangle;
 
-	printTriangle(Triangle.getNameOfFigure(), Triangle.getSideLengthA(), Triangle.getSideLengthB(), Triangle.getSideLengthC(), Triangle.getAngleA(), Triangle.getAngleB(), Triangle.getAngleC(), Triangle.getSideLengthD(), Triangle.getAngleD());
+	printTriangle(Triangle.getNameOfFigure(), Triangle.getSideLengthA(), Triangle.getSideLengthB(), Triangle.getSideLengthC(), Triangle.getAngleA(), Triangle.getAngleB(), Triangle.getAngleC(), Triangle.getSideLengthD(), Triangle.getAngleD());*/
 
 
 }
