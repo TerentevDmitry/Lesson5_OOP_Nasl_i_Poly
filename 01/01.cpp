@@ -41,9 +41,9 @@ public:
 
 };
 
-void print(Figure &x) //Функция печати названия фигуры и числа сторон
+void print(Figure &xFig) //Функция печати названия фигуры и числа сторон
 {
-	std::cout << x.getNameOfFigure() << " : " << x.getNumberOfSides() << std::endl;
+	std::cout << xFig.getNameOfFigure() << " : " << xFig.getNumberOfSides() << std::endl;
 }
 
 int main()
