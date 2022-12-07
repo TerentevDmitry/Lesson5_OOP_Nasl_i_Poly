@@ -1,11 +1,10 @@
 ﻿#include <iostream>
 #include <string>
 
-class Figure
+class Figure 
 {
 protected:
 	std::string nameOfFigure_ = "Фигура";
-	bool haveFourSides_ = false; //признак что четыре стороны
 	bool checkFigure = false;
 	int quantityOfSides = 0;
 	int sideLengthA_ = 0;
@@ -17,7 +16,7 @@ protected:
 	int angleC_ = 0;
 	int angleD_ = 0;
 
-virtual bool metodCheckFigure()
+virtual bool metodCheckFigure() //Виртуальный метод проверки фигуры.Кол-во сторон == 0 
 	{
 		if (quantityOfSides == 0)
 		{
@@ -30,8 +29,8 @@ virtual bool metodCheckFigure()
 	};
 
 public:
+	//Геттеры
 	std::string getNameOfFigure() { return nameOfFigure_; }
-	int getHaveFourSides() { return haveFourSides_; }
 
 	int getSideLengthA() { return sideLengthA_; }
 	int getSideLengthB() { return sideLengthB_; }
@@ -43,7 +42,7 @@ public:
 	int getAngleC() { return angleC_; }
 	int getAngleD() { return angleD_; }
 
-	virtual void printFigure()
+	virtual void printFigure() //Виртуальный метод печати и проверка правильности фигуры
 	{
 		std::cout << std::endl;
 		std::cout << nameOfFigure_ << ":" << std::endl;
@@ -60,7 +59,7 @@ public:
 class Triangle : public Figure
 {
 protected:
-	bool metodCheckFigure() override
+	bool metodCheckFigure() override //Переписанный метод проверки на сумма всех углов треуг == 180
 	{
 		if ((angleA_ + angleB_ + angleC_) == 180)
 		{
@@ -87,22 +86,17 @@ public:
 		checkFigure = metodCheckFigure();
 	}
 
-	void printFigure() override
+	void printFigure() override //Переписанный метод печати с вызовом базового метода печати
 	{
-		Figure::printFigure();
+		Figure::printFigure(); 
 
 		std::cout << "Стороны:";
 		std::cout << " a = " << getSideLengthA() << ", b = " << getSideLengthB() << ", с = " << getSideLengthC();
-		if (getHaveFourSides())
-		{
-			std::cout << ", d = " << getSideLengthD() << std::endl;
-		}
-		else { std::cout << std::endl; }
+		std::cout << std::endl;
 		
 		std::cout << "Углы:";
 		std::cout << " А = " << getAngleA() << ", В = " << getAngleB() << ", С = " << getAngleC();
-		if (getHaveFourSides()) { std::cout << ", D = " << getAngleD() << std::endl; }
-		else { std::cout << std::endl; }
+		std::cout << std::endl;
 	}
 
 };
@@ -112,7 +106,7 @@ class rightTriangle : public Triangle
 protected:
 	bool metodCheckFigure() override
 	{
-		if (Triangle::metodCheckFigure())
+		if (Triangle::metodCheckFigure() && (angleC_ == 90))
 		{
 			return true;
 		}
@@ -123,8 +117,8 @@ protected:
 	};
 
 public:
-	rightTriangle(int sideLengthA, int sideLengthB, int sideLengthC, int angleA, int angleB)
-		: Triangle(sideLengthA, sideLengthB, sideLengthC, angleA, angleB, 90)
+	rightTriangle(int sideLengthA, int sideLengthB, int sideLengthC, int angleA, int angleB, int angleC)
+		: Triangle(sideLengthA, sideLengthB, sideLengthC, angleA, angleB, angleC)
 	{
 		Triangle::nameOfFigure_ = "Прямоугольный треугольник";
 	};
@@ -146,8 +140,8 @@ protected:
 	};
 
 public:
-	isoscelesTriangle(int sideLengthA, int sideLengthB, int angleA, int angleB)
-		: Triangle(sideLengthA, sideLengthB, sideLengthA, angleA, angleB, angleA)
+	isoscelesTriangle(int sideLengthA, int sideLengthB, int sideLengthC, int angleA, int angleB, int angleC)
+		: Triangle(sideLengthA, sideLengthB, sideLengthC, angleA, angleB, angleC)
 	{
 		Triangle::nameOfFigure_ = "Равнобедренный треугольник";
 	};
@@ -155,18 +149,29 @@ public:
 
 class equilateralTriangle : public Triangle
 {
-
+private:
+	bool CheckEquilateralTriangle()
+	{
+		if ((sideLengthA_ == sideLengthB_ && sideLengthB_ == sideLengthC_) && ((angleA_ == 60) && (angleA_ = 60) && (angleC_ = 60)))
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		};
+	}
 
 public:
-	equilateralTriangle(int sideLengthA, int sideLengthB, int sideLengthC)
-		: Triangle(sideLengthA, sideLengthB, sideLengthC, 60, 60, 60)
+	equilateralTriangle(int sideLengthA, int sideLengthB, int sideLengthC, int angleA, int angleB, int angleC)
+		: Triangle(sideLengthA, sideLengthB, sideLengthC, angleA, angleB, angleC)
 	{
 		Triangle::nameOfFigure_ = "Равносторонний треугольник";
 	};
 protected:
 	bool metodCheckFigure() override
 	{
-		if (Triangle::metodCheckFigure() && (sideLengthA_ == sideLengthB_ == sideLengthC_))
+		if (Triangle::metodCheckFigure() && (CheckEquilateralTriangle()))
 		{
 			return true;
 		}
@@ -175,35 +180,128 @@ protected:
 			return false;
 		};
 	};
+
+
+
 };
 
 class Quadrilateral : public Figure
 {
+protected:
+	virtual bool metodCheckFigure()
+	{
+		if ((angleA_ + angleB_ + angleC_ + angleD_) == 360)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	};
+
+	//Метод проверки "стороны a,c и b,d попарно равны"
+	bool metodCheckSideLengthACiBD()
+	{
+		if (sideLengthA_ == sideLengthC_ && sideLengthB_ == sideLengthD_)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	};
+
+	//Метод проверки "все стороны равны"
+	bool metodCheckSideLengthACBD() 
+	{
+		if (sideLengthA_ == sideLengthB_ && sideLengthB_ == sideLengthC_ && sideLengthC_ == sideLengthD_)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	};
+
+	//Метод проверки "все углы равны 90 градусов"
+	bool metodCheckAngleabcd90() 
+	{
+		if (angleA_ == 90 && angleB_ == 90 && angleC_ == 90 && angleD_ == 90)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	};
+
+	//Метод проверки "углы A,C и B,D попарно равны"
+	bool metodCheckAngleACiBD() 
+	{
+		if (angleA_ == angleC_ && angleB_ == angleD_)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	};
 
 public:
 	Quadrilateral(int sideLengthA, int sideLengthB, int sideLengthC, int sideLengthD, int angleA, int angleB, int angleC, int angleD)
 	{
 		nameOfFigure_ = "Четырехугольник";
 
-		haveFourSides_ = true;
-
+		quantityOfSides = 4;
 		sideLengthA_ = sideLengthA;
 		sideLengthB_ = sideLengthB;
 		sideLengthC_ = sideLengthC;
 		sideLengthD_ = sideLengthD;
-
+		
 		angleA_ = angleA;
 		angleB_ = angleB;
 		angleC_ = angleC;
 		angleD_ = angleD;
 	}
+
+	void printFigure() override
+	{
+		Figure::printFigure();
+
+		std::cout << "Стороны:";
+		std::cout << " a = " << getSideLengthA() << ", b = " << getSideLengthB() << ", с = " << getSideLengthC();
+		std::cout << ", d = " << getSideLengthD() << std::endl;
+		
+		std::cout << "Углы:";
+		std::cout << " А = " << getAngleA() << ", В = " << getAngleB() << ", С = " << getAngleC();
+		std::cout << ", D = " << getAngleD() << std::endl;
+	}
+
 };
 
 class Rectangle : public Quadrilateral
 {
+protected:
+	bool metodCheckFigure() override
+	{
+		if (Quadrilateral::metodCheckFigure() && Quadrilateral::metodCheckSideLengthACiBD() && Quadrilateral::metodCheckAngleabcd90())
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	};
+
 public:
-	Rectangle(int sideLengthA, int sideLengthB)
-		: Quadrilateral(sideLengthA, sideLengthB, sideLengthA, sideLengthB, 90, 90, 90, 90)
+	Rectangle(int sideLengthA, int sideLengthB, int sideLengthC, int sideLengthD, int angleA, int angleB, int angleC, int angleD)
+		: Quadrilateral(sideLengthA, sideLengthB, sideLengthC, sideLengthD, angleA, angleB, angleC, angleD)
 	{
 		Quadrilateral::nameOfFigure_ = "Прямоугольник";
 	}
@@ -211,9 +309,21 @@ public:
 
 class Square : public Quadrilateral
 {
+protected:
+	bool metodCheckFigure() override
+	{
+		if (Quadrilateral::metodCheckFigure() && Quadrilateral::metodCheckSideLengthACBD() && Quadrilateral::metodCheckAngleabcd90())
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
 public:
-	Square(int sideLengthA)
-		: Quadrilateral(sideLengthA, sideLengthA, sideLengthA, sideLengthA, 90, 90, 90, 90)
+	Square(int sideLengthA, int sideLengthB, int sideLengthC, int sideLengthD, int angleA, int angleB, int angleC, int angleD)
+		: Quadrilateral(sideLengthA, sideLengthB, sideLengthC, sideLengthD, angleA, angleB, angleC, angleD)
 	{
 		Quadrilateral::nameOfFigure_ = "Квадрат";
 	}
@@ -221,9 +331,22 @@ public:
 
 class Parallelogram : public Quadrilateral
 {
+protected:
+	bool metodCheckFigure() override
+	{
+		if (Quadrilateral::metodCheckFigure() && Quadrilateral::metodCheckSideLengthACiBD() && Quadrilateral::metodCheckAngleACiBD())
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+
 public:
-	Parallelogram(int sideLengthA, int sideLengthB, int angleA, int angleB)
-		: Quadrilateral(sideLengthA, sideLengthB, sideLengthA, sideLengthB, angleA, angleB, angleA, angleB)
+	Parallelogram(int sideLengthA, int sideLengthB, int sideLengthC, int sideLengthD, int angleA, int angleB, int angleC, int angleD)
+		: Quadrilateral(sideLengthA, sideLengthB, sideLengthC, sideLengthD, angleA, angleB, angleC, angleD)
 	{
 		Quadrilateral::nameOfFigure_ = "Параллелограмм";
 	}
@@ -231,9 +354,22 @@ public:
 
 class Rhomb : public Quadrilateral
 {
+protected:
+	bool metodCheckFigure() override
+	{
+		if (Quadrilateral::metodCheckFigure() && Quadrilateral::metodCheckSideLengthACBD() && Quadrilateral::metodCheckAngleACiBD())
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+
 public:
-	Rhomb(int sideLengthA, int angleA, int angleB)
-		: Quadrilateral(sideLengthA, sideLengthA, sideLengthA, sideLengthA, angleA, angleB, angleA, angleB)
+	Rhomb(int sideLengthA, int sideLengthB, int sideLengthC, int sideLengthD, int angleA, int angleB, int angleC, int angleD)
+		: Quadrilateral(sideLengthA, sideLengthB, sideLengthC, sideLengthD, angleA, angleB, angleC, angleD)
 	{
 		Quadrilateral::nameOfFigure_ = "Ромб";
 	}
@@ -250,36 +386,30 @@ int main()
 	Triangle Triangle1(10, 20, 30, 50, 60, 70);
 	Triangle1.printFigure();
 
-	rightTriangle rightTriangle1(10, 20, 30, 30, 60);
+	rightTriangle rightTriangle1(10, 20, 30, 50, 60, 90);
 	rightTriangle1.printFigure();
-
-	rightTriangle rightTriangle2(10, 20, 30, 50, 60);
+	
+	rightTriangle rightTriangle2(10, 20, 30, 50, 40, 90);
 	rightTriangle2.printFigure();
 
-	isoscelesTriangle isoscelesTriangle1(10, 20, 50, 60);
+	isoscelesTriangle isoscelesTriangle1(10, 20, 10, 50, 60, 90);
 	isoscelesTriangle1.printFigure();
 
-	isoscelesTriangle isoscelesTriangle2(10, 20, 50, 80);
-	isoscelesTriangle2.printFigure();
-
-	equilateralTriangle equilateralTriangle1(20, 20, 20);
+	equilateralTriangle equilateralTriangle1(30, 30, 30, 60, 60, 60);
 	equilateralTriangle1.printFigure();
 
-	equilateralTriangle equilateralTriangle2(20, 30, 20);
-	equilateralTriangle2.printFigure();
+	Quadrilateral Quadrilateral1(10, 20, 30, 40, 50, 60, 70, 80);
+	Quadrilateral1.printFigure();
 
-	//Quadrilateral Quadrilateral1(10, 20, 30, 40, 50, 60, 70, 80);
-	//Quadrilateral1.printFigure();
+	Rectangle Rectangle1(10, 20, 10, 20, 90, 90, 90, 90);
+	Rectangle1.printFigure();
 
-	//Rectangle Rectangle1(10, 20);
-	//Rectangle1.printFigure();
+	Square Square1(20, 20, 20, 20, 90, 90, 90, 90);
+	Square1.printFigure();
 
-	//Square Square1(20);
-	//Square1.printFigure();
+	Parallelogram Parallelogram1(20, 30, 20, 30, 30, 40, 30, 40);
+	Parallelogram1.printFigure();
 
-	//Parallelogram Parallelogram1(20, 30, 30, 40);
-	//Parallelogram1.printFigure();
-
-	//Rhomb Rhomb1(30, 30, 40);
-	//Rhomb1.printFigure();
+	Rhomb Rhomb1(30, 30, 30, 30, 30, 40, 30, 40);
+	Rhomb1.printFigure();
 }
